@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Last But Not Least</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        body {
+            background-color: #121212;
+            color: #d1d1d1;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 280px;
+            width: 100%;
+            border: 3px solid #333;
+            border-radius: 12px;
+            filter: grayscale(30%);
+            margin-bottom: 15px;
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                0 12px 24px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                0 12px 24px rgba(0, 0, 0, 0.2),
+                0 0 30px rgba(255, 77, 77, 0.6),
+                0 0 50px rgba(255, 77, 77, 0.3);
+        }
+
+        #quote {
+            font-size: 1.1rem;
+            max-width: 650px;
+            min-height: 55px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: bold;
+            line-height: 1.4;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #quote.fade-out {
+            opacity: 0;
+        }
+
+        .interaction-section {
+            background-color: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-top: 15px;
+            max-width: 450px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .refresh-btn {
+            background-color: #2a2a2a;
+            color: #ff4d4d;
+            border: 2px solid #ff4d4d;
+            padding: 12px 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        .refresh-btn:hover {
+            background-color: #ff4d4d;
+            color: #000;
+        }
+
+        #counter-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #333;
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #count-num {
+            color: #ff4d4d;
+            font-size: 1.8rem;
+            display: block;
+            margin-top: 8px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+            transition: transform 0.2s ease-out;
+        }
+
+        #count-num.pulse {
+            animation: counterPulse 0.5s ease-out;
+        }
+
+        @keyframes counterPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.3);
+                color: #ff6b6b;
+                text-shadow: 0 0 20px rgba(255, 77, 77, 0.8);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff4d4d;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            margin-top: 0;
+            text-shadow: 0 0 20px rgba(255, 77, 77, 0.5),
+                         0 0 40px rgba(255, 77, 77, 0.3);
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+
+            img {
+                max-width: 220px;
+            }
+
+            #quote {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Stop Last But Not Least</h1>
+
+<img src="cat.jpg" alt="Grumpy cat suffering through a meeting">
+
+<div id="quote">Preparing for the worst...</div>
+
+<div class="interaction-section">
+    <button class="refresh-btn" onclick="endureMore()">Endure Another Cliché</button>
+
+    <div id="counter-container">
+        SOULS CRUSHED BY THIS PHRASE:
+        <span id="count-num">0</span>
+    </div>
+</div>
+
+<script>
+    const quotePrefix = "Every time somebody says 'last but not least,'";
+
+    const quoteEndings = [
+        "I hope they're referring to the end of their speech.",
+        "I die a little inside. Not enough to actually leave, unfortunately.",
+        "it's usually the person I liked the least saying the thing I care about the least.",
+        "I look for the nearest exit. It's not there. Neither is my will to live.",
+        "my nap gets delayed by another layer of disappointment.",
+        "a meeting that could have been an email gains another five minutes of life.",
+        "I assume they are gaslighting me into thinking this matters.",
+        "I mentally check out and start planning what I'll have for lunch. It's always more important.",
+        "I know for a fact it's going to be both last AND least.",
+        "I wonder if they realize we all stopped listening after 'good morning.'",
+        "an angel doesn't get its wings. An employee loses their will to live instead.",
+        "I question every life choice that led me to this conference room.",
+        "I can feel my soul trying to escape through my ears.",
+        "I'm reminded that corporate jargon is just a fancy way to waste everyone's time.",
+        "I silently hope they'll trip on their words. And maybe their shoelaces.",
+        "I realize I've been holding my breath for five minutes. Not long enough.",
+        "a perfectly good minute of my life gets filed under 'regrets.'",
+        "I know they're about to introduce someone who should have been first but nobody cares.",
+        "my enthusiasm dies. It was already on life support, to be fair.",
+        "I add another tally to my internal 'why am I here' scoreboard.",
+        "I contemplate faking a medical emergency. Then I remember I'd have to explain it later.",
+        "I'm pretty sure they're legally required to say something completely irrelevant next."
+    ];
+
+    // Initialize counter from local storage
+    let count = localStorage.getItem('crushCount') || 0;
+    document.getElementById('count-num').innerText = count;
+
+    function endureMore() {
+        const quoteElement = document.getElementById('quote');
+
+        // Fade out
+        quoteElement.classList.add('fade-out');
+
+        // Wait for fade out, then change text and fade in
+        setTimeout(() => {
+            // Update Quote
+            const randomIndex = Math.floor(Math.random() * quoteEndings.length);
+            quoteElement.innerText = `"${quotePrefix} ${quoteEndings[randomIndex]}"`;
+
+            // Fade in
+            quoteElement.classList.remove('fade-out');
+        }, 300);
+
+        // Update Counter
+        count++;
+        const countElement = document.getElementById('count-num');
+        countElement.innerText = count;
+        localStorage.setItem('crushCount', count);
+
+        // Trigger pulse animation
+        countElement.classList.remove('pulse');
+        void countElement.offsetWidth; // Force reflow to restart animation
+        countElement.classList.add('pulse');
+    }
+
+    // Run once on load to show first quote
+    window.onload = () => {
+        const randomIndex = Math.floor(Math.random() * quoteEndings.length);
+        document.getElementById('quote').innerText = `"${quotePrefix} ${quoteEndings[randomIndex]}"`;
+    };
+</script>
+</body>
+</html>
