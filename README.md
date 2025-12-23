@@ -2,6 +2,8 @@
 
 A satirical website dedicated to the most overused corporate phrase of all time: "last but not least."
 
+**🌐 Live Site:** [https://laurent-clouet.fr/stop-last-but-not-least/](https://laurent-clouet.fr/stop-last-but-not-least/)
+
 ![Stop Last But Not Least](cat.jpg)
 
 ## About
