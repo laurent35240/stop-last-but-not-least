@@ -1,42 +1,49 @@
 const quotePrefix = "Every time somebody says 'last but not least,'";
 const celebrationThreshold = 100;
 
-const quoteEndings = [
-    "I hope they're referring to the end of their speech.",
-    "I die a little inside. Not enough to actually leave, unfortunately.",
-    "it's usually the person I liked the least saying the thing I care about the least.",
-    "I look for the nearest exit. It's not there. Neither is my will to live.",
-    "my nap gets delayed by another layer of disappointment.",
-    "a meeting that could have been an email gains another five minutes of life.",
-    "I assume they are gaslighting me into thinking this matters.",
-    "I mentally check out and start planning what I'll have for lunch. It's always more important.",
-    "I know for a fact it's going to be both last AND least.",
-    "I wonder if they realize we all stopped listening after 'good morning.'",
-    "an angel doesn't get its wings. An employee loses their will to live instead.",
-    "I question every life choice that led me to this conference room.",
-    "I can feel my soul trying to escape through my ears.",
-    "I'm reminded that corporate jargon is just a fancy way to waste everyone's time.",
-    "I silently hope they'll trip on their words. And maybe their shoelaces.",
-    "I realize I've been holding my breath for five minutes. Not long enough.",
-    "a perfectly good minute of my life gets filed under 'regrets.'",
-    "I know they're about to introduce someone who should have been first but nobody cares.",
-    "my enthusiasm dies. It was already on life support, to be fair.",
-    "I add another tally to my internal 'why am I here' scoreboard.",
-    "I contemplate faking a medical emergency. Then I remember I'd have to explain it later.",
-    "I'm pretty sure they're legally required to say something completely irrelevant next."
-];
+let quoteEndings = [];
+
+// Load quotes from JSON file
+async function loadQuotes() {
+    try {
+        const response = await fetch('quotes.json');
+        quoteEndings = await response.json();
+    } catch (error) {
+        console.error('Failed to load quotes:', error);
+        // Fallback quotes if loading fails
+        quoteEndings = [
+            "I hope they're referring to the end of their speech.",
+            "I die a little inside. Not enough to actually leave, unfortunately."
+        ];
+    }
+}
 
 // Initialize counter from local storage
 let count = parseInt(localStorage.getItem('crushCount')) || 0;
-document.getElementById('count-num').innerText = count;
 
-// Set celebration message dynamically
-document.getElementById('celebration-message').innerText =
-    `Congratulations! You've survived ${celebrationThreshold} uses of "last but not least."`;
+// Initialize the application
+async function init() {
+    await loadQuotes();
 
-// Show replay button if user has reached the threshold before
-if (count >= celebrationThreshold) {
-    document.getElementById('replay-btn').classList.add('show');
+    // Update counter display
+    document.getElementById('count-num').innerText = count;
+
+    // Set celebration message dynamically
+    document.getElementById('celebration-message').innerText =
+        `Congratulations! You've survived ${celebrationThreshold} uses of "last but not least."`;
+
+    // Show replay button if user has reached the threshold before
+    if (count >= celebrationThreshold) {
+        document.getElementById('replay-btn').classList.add('show');
+    }
+
+    // Show first quote
+    displayRandomQuote();
+}
+
+function displayRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quoteEndings.length);
+    document.getElementById('quote').innerText = `"${quotePrefix} ${quoteEndings[randomIndex]}"`;
 }
 
 function endureMore() {
@@ -48,8 +55,7 @@ function endureMore() {
     // Wait for fade out, then change text and fade in
     setTimeout(() => {
         // Update Quote
-        const randomIndex = Math.floor(Math.random() * quoteEndings.length);
-        quoteElement.innerText = `"${quotePrefix} ${quoteEndings[randomIndex]}"`;
+        displayRandomQuote();
 
         // Fade in
         quoteElement.classList.remove('fade-out');
@@ -112,8 +118,5 @@ function closeCelebration() {
     overlay.classList.remove('show');
 }
 
-// Run once on load to show first quote
-window.onload = () => {
-    const randomIndex = Math.floor(Math.random() * quoteEndings.length);
-    document.getElementById('quote').innerText = `"${quotePrefix} ${quoteEndings[randomIndex]}"`;
-};
+// Initialize application when page loads
+window.onload = init;
